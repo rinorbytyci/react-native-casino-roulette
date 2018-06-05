@@ -1,72 +1,54 @@
+# react-native-roulette-casino
+
+!()[https://cdn.rawgit.com/DKbyo/react-native-roulette-casino-demo/711e0cc2/demo.gif]
+
 ### Installation
 ```bash
-npm install react-native-roulette
+npm install react-native-casino-roulette
 ```
 
 ### Properties
 
 ```
-children // must be greater than 1
+options // Array of choices
 
 step // Roulette items margin
 radius = {300} // Roulette radius
 distance = {100} // Distance from center
 rouletteRotate = {0} // Roulette rotate angle
 enableUserRotate = {false} // Enable user input for rotate
-
-renderCenter = () => {} // Render custom center
-handlerOfRotate = () => {} // Return active item props after rotation
-
+background = {require('./background.png')} // Set background image
+marker = {require('./marker.png')} // Set marker image
+markerWidth = {require('./marker.png')} // Set marker width
+onRotate = () => {} // Return active option after rotation
+onRotateChange = () => {} // Return rotate change status
+options= {[1,2,3]} // Set array of options
 customStyle // Roulette styles
-customCenterStyle // Center styles
 ```
 
-### Usage example
+### Quick example
 ```
 ...
 
 import Roulette from 'react-native-roulette';
 
-<Roulette rouletteRotate={10} enableUserRotate onRotate={(props) => console.log(props)} >
-  <AppIcon
-    ref="icon"
-    logo={TAPBOO_LOGO}
-    title="TAPBOO"
-    onPress={() => Actions.tapboo()}
-  />
-  <AppIcon
-    ref="icon"
-    logo={TUCHAT_LOGO}
-    title="TUCHAT"
-    onPress={() => Actions.tuchat()}
-  />
-  <AppIcon
-    ref="icon"
-    logo={DEV2UP_LOGO}
-    title="DEV2UP"
-    onPress={() => Actions.dev2up()}
-  />
-  <AppIcon
-    ref="icon"
-    logo={TAPBOO_LOGO}
-    title="TAPBOO"
-    onPress={() => Actions.tapboo()}
-  />
-  <AppIcon
-    ref="icon"
-    logo={TUCHAT_LOGO}
-    title="TUCHAT"
-    onPress={() => Actions.tuchat()}
-  />
-  <AppIcon
-    ref="icon"
-    logo={TUCHAT_LOGO}
-    title="TUCHAT"
-    onPress={() => Actions.tuchat()}
-  />
+//Roulette numbers
+const numbers = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26]
+const options  = numbers.map((o)=>({index:o}))  
+
+<Roulette 
+          enableUserRotate 
+          background={wheel}
+          marker={marker}
+          options={options}
+          markerWidth={20} >          
 </Roulette>
 ...
 
 ```
 
-![](http://i.imgur.com/MVfhifa.gif)
+### Full example
+
+For full example see [](https://github.com/DKbyo/react-native-roulette-casino-demo)
+
+

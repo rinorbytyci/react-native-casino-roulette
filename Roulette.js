@@ -1,5 +1,6 @@
-import React, { Component, PropTypes, Children } from 'react';
-import { View, Animated, PanResponder, Easing } from 'react-native';
+import React, { Component, Children } from 'react';
+import PropTypes from 'prop-types';
+import { View, Animated, PanResponder, Easing, ImageBackground, Image } from 'react-native';
 
 import RouletteItem from './RouletteItem';
 import styles from './styles';
@@ -13,80 +14,63 @@ class Roulette extends Component {
       activeItem: 0
     };
 
-    this.step = props.step || (2 * Math.PI) / props.children.length;
+    this.step = props.step || (2 * Math.PI) / props.options.length;
 
     this.panResponder = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true,
       onMoveShouldSetPanResponderCapture: () => true,
       onPanResponderRelease: () => {
-        const { enableUserRotate, handlerOfRotate } = this.props;
+        const { enableUserRotate, onRotate, onRotateChange, duration, easing } = this.props;
 
         if (enableUserRotate) {
-          const { children } = this.props;
+          const { options, turns } = this.props;
           const { activeItem } = this.state;
-          const nextItem = activeItem + 1;
+          let random = Math.floor(Math.random() * options.length) 
+          + (options.length*turns);                    
+          const nextItem = random;
 
           this.state._animatedValue.setValue(activeItem);
-          Animated.timing(this.state._animatedValue, { toValue: nextItem, easing: Easing.linear }).start();
-
-          const newActiveItem = nextItem > children.length ? 1 : nextItem;
-
-          this.setState({ activeItem: newActiveItem }, () => handlerOfRotate(children[children.length - newActiveItem].props));
+          let animation = Animated.timing(this.state._animatedValue, { toValue: nextItem, easing, duration })          
+          onRotateChange("start");
+          animation.start(()=>{
+            onRotateChange("stop");
+          });
+          
+          let newActiveItem = nextItem > options.length ? (nextItem % options.length)  : nextItem;
+          if(newActiveItem == 0){
+            newActiveItem = options.length
+          }
+          this.setState({ activeItem: newActiveItem }, () => onRotate(options[options.length - newActiveItem]));
         }
       }
     });
   }
 
-  getCenterCoordinates({ x, y, width, height }) {
-    this.setState({ centerX: x + (width / 2), centerY: y + (height / 2) });
-  }
-
-  renderDefaultCenter() {
-    const { radius, customCenterStyle } = this.props;
-
-    return (
-      <View
-        style={[
-          styles.center,
-          { width: radius / 10, height: radius / 10, borderRadius: radius },
-          customCenterStyle
-        ]}
-        onLayout={(event) => this.getCenterCoordinates(event.nativeEvent.layout)}
-      />
-    );
-  }
-
   render() {
-    const { children, radius, distance, renderCenter, customStyle, rouletteRotate } = this.props;
+    const { options, radius, distance, customStyle, rouletteRotate, background, marker,markerWidth } = this.props;
 
     const interpolatedRotateAnimation = this.state._animatedValue.interpolate({
-      inputRange: [0, children.length],
+      inputRange: [0, options.length],
       outputRange: [`${rouletteRotate}deg`, `${360 + rouletteRotate}deg`]
     });
 
     return (
-      <Animated.View
-        {...this.panResponder.panHandlers}
-        style={[
-          styles.container,
-          { width: radius, height: radius, borderRadius: radius / 2 },
-          { transform: [{ rotate: interpolatedRotateAnimation }] },
-          customStyle
-        ]}
-      >
-          {
-            Children.map(children, (child, index) =>
-              <RouletteItem
-                item={child}
-                index={index}
-                radius={radius}
-                step={this.step}
-                distance={distance}
-                rouletteRotate={rouletteRotate}
-              />
-          )}
-          {renderCenter() || this.renderDefaultCenter()}
-      </Animated.View>
+      <View>
+        <Animated.View
+          {...this.panResponder.panHandlers}
+          style={[
+            styles.container,
+            { width: radius, height: radius, borderRadius: radius / 2 },
+            { transform: [{ rotate: interpolatedRotateAnimation }] },
+            customStyle
+          ]}
+        >
+          <ImageBackground width={radius} height={radius} style={{width:radius, height: radius}} source={background}>
+
+          </ImageBackground>
+        </Animated.View>
+        <Image source={marker} resizeMode="contain" style={[styles.marker,{width:markerWidth, left: (radius/2) -(markerWidth/2) } ]}/>
+      </View>
     );
   }
 }
@@ -97,11 +81,13 @@ Roulette.propTypes = {
   distance: PropTypes.number,
   rouletteRotate: PropTypes.number,
   enableUserRotate: PropTypes.bool,
-  children: PropTypes.element,
-  renderCenter: PropTypes.func,
-  handlerOfRotate: PropTypes.func,
+  onRotate: PropTypes.func,
+  onRotateChange: PropTypes.func,  
   customStyle: PropTypes.any,
-  customCenterStyle: PropTypes.any
+  background: PropTypes.any,
+  turns: PropTypes.number,
+  duration: PropTypes.number,
+  easing: PropTypes.any
 };
 
 Roulette.defaultProps = {
@@ -109,8 +95,13 @@ Roulette.defaultProps = {
   distance: 100,
   rouletteRotate: 0,
   enableUserRotate: false,
-  renderCenter: () => {},
-  handlerOfRotate: () => {}
+  background: null,
+  turns: 4,
+  onRotate: () => {},
+  onRotateChange: () => {},
+  duration: 3500,
+  easing: Easing.inOut(Easing.ease)
+  
 };
 
 export default Roulette;

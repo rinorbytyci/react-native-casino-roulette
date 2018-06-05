@@ -1,27 +1,25 @@
 {
-  "name": "react-native-roulette",
-  "version": "0.0.8",
-  "description": "react native roulette",
+  "name": "react-native-casino-roulette",
+  "version": "1.2.0",
+  "description": "react native casino roulette",
   "main": "Roulette.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Kuznetsov Vladislav <kak60g@gmail.com>",
+  "author": "Danyel Cabello <danyel.nerv@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Squirre1/react-native-roulette"
+    "url": "https://github.com/DKbyo/react-native-casino-roulette"
   },
   "keywords": [
     "react-native",
     "react-native-js",
     "react-native-component",
     "react-native-roulette"
-  ],
-  "dependencies": {
-
-  },
+  ],  
   "peerDependencies": {
-    "react-native": ">=0.28 <1.0"
+    "react-native": ">=0.55.4 <1.0",
+    "prop-types": ">=15.6.1"
   }
 }
