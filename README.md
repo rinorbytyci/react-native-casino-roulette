@@ -1,6 +1,6 @@
 # react-native-roulette-casino
 
-!()[https://cdn.rawgit.com/DKbyo/react-native-roulette-casino-demo/711e0cc2/demo.gif]
+![](https://cdn.rawgit.com/DKbyo/react-native-roulette-casino-demo/711e0cc2/demo.gif)
 
 ### Installation
 ```bash
