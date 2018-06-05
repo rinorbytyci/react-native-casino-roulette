@@ -49,6 +49,6 @@ const options  = numbers.map((o)=>({index:o}))
 
 ### Full example
 
-For full example see [](https://github.com/DKbyo/react-native-roulette-casino-demo)
+For full example see [here](https://github.com/DKbyo/react-native-roulette-casino-demo)
 
 
