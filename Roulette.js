@@ -2,7 +2,6 @@ import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { View, Animated, PanResponder, Easing, ImageBackground, Image } from 'react-native';
 
-import RouletteItem from './RouletteItem';
 import styles from './styles';
 
 class Roulette extends Component {
@@ -47,7 +46,7 @@ class Roulette extends Component {
   }
 
   render() {
-    const { options, radius, distance, customStyle, rouletteRotate, background, marker,markerWidth } = this.props;
+    const { options, radius, distance, customStyle, rouletteRotate, background, marker,centerImage, markerWidth,markerTop,centerWidth,centerTop,markerStyle } = this.props;
 
     const interpolatedRotateAnimation = this.state._animatedValue.interpolate({
       inputRange: [0, options.length],
@@ -56,6 +55,8 @@ class Roulette extends Component {
 
     return (
       <View>
+        <Image source={marker} resizeMode="contain" style={[styles.marker,{zIndex:9999,top: markerTop, width:markerWidth, left: (radius/2) -(markerWidth/2)}, markerStyle ]}/>
+        
         <Animated.View
           {...this.panResponder.panHandlers}
           style={[
@@ -69,7 +70,9 @@ class Roulette extends Component {
 
           </ImageBackground>
         </Animated.View>
-        <Image source={marker} resizeMode="contain" style={[styles.marker,{width:markerWidth, left: (radius/2) -(markerWidth/2) } ]}/>
+        {centerImage &&
+          <Image source={centerImage} resizeMode="contain" style={[styles.marker,{zIndex:9999,top: centerTop, width:centerWidth, left: (radius/2) -(centerWidth/2) } ]}/>
+        }
       </View>
     );
   }
@@ -100,8 +103,13 @@ Roulette.defaultProps = {
   onRotate: () => {},
   onRotateChange: () => {},
   duration: 3500,
-  easing: Easing.inOut(Easing.ease)
-  
+  easing: Easing.inOut(Easing.ease),
+  markerTop: 0,
+  markerWidth:20,
+  centerWidth:20,
+  centerTop: 0,
+  centerImage: null,
+  markerStyle: {}
 };
 
 export default Roulette;

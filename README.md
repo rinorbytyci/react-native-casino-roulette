@@ -20,10 +20,15 @@ enableUserRotate = {false} // Enable user input for rotate
 background = {require('./background.png')} // Set background image
 marker = {require('./marker.png')} // Set marker image
 markerWidth = {require('./marker.png')} // Set marker width
+markerTop: 0, // Marker top position
 onRotate = () => {} // Return active option after rotation
 onRotateChange = () => {} // Return rotate change status
 options= {[1,2,3]} // Set array of options
 customStyle // Roulette styles
+centerImage: null, // Center image (This image will not spin)
+centerTop: 0, //Center width position
+centerWidth:20, // Center width
+markerStyle: {} // Custom marker style
 ```
 
 ### Quick example
