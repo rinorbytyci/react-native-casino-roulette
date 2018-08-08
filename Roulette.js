@@ -1,7 +1,7 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { View, Animated, PanResponder, Easing, ImageBackground, Image } from 'react-native';
-
+import RouletteItem from './RouletteItem'
 import styles from './styles';
 
 class Roulette extends Component {
@@ -53,9 +53,10 @@ class Roulette extends Component {
       outputRange: [`${rouletteRotate}deg`, `${360 + rouletteRotate}deg`]
     });
 
+    const displayOptions = options && options.length > 0 && options[0] && React.isValidElement(options[0]);
+
     return (
       <View>
-        <Image source={marker} resizeMode="contain" style={[styles.marker,{zIndex:9999,top: markerTop, width:markerWidth, left: (radius/2) -(markerWidth/2)}, markerStyle ]}/>
         
         <Animated.View
           {...this.panResponder.panHandlers}
@@ -66,10 +67,22 @@ class Roulette extends Component {
             customStyle
           ]}
         >
-          <ImageBackground width={radius} height={radius} style={{width:radius, height: radius}} source={background}>
-
+          <ImageBackground width={radius} height={radius} style={{width:radius, height: radius, zIndex:100}} source={background}>
+          {displayOptions && Children.map(options, (child, index) =>
+              <RouletteItem
+                item={child}
+                index={index}
+                radius={radius}
+                step={this.step}
+                distance={distance}
+                rouletteRotate={rouletteRotate}
+              />
+          )}
           </ImageBackground>
+          
         </Animated.View>
+        <Image source={marker} resizeMode="contain" style={[styles.marker,{zIndex:9999,top: markerTop, width:markerWidth, left: (radius/2) -(markerWidth/2)}, markerStyle ]}/>
+        
         {centerImage &&
           <Image source={centerImage} resizeMode="contain" style={[styles.marker,{zIndex:9999,top: centerTop, width:centerWidth, left: (radius/2) -(centerWidth/2) } ]}/>
         }

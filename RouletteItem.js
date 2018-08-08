@@ -14,9 +14,9 @@ class RouletteItem extends Component {
 
   getCoordinates({ width, height }) {
     const { radius, index, step, distance } = this.props;
-
-    const coordX = Math.round(radius / 2 + distance * Math.cos((index) * step) - width / 2);
-    const coordY = Math.round(radius / 2 + distance * Math.sin((index) * step) - height / 2);
+    
+    const coordX = Math.round(radius / 2 + distance * -Math.sin((index) * step - (Math.PI) ) - width / 2);
+    const coordY = Math.round(radius / 2 + distance * Math.cos((index) * step - (Math.PI)) - height / 2);
 
     this.setState({ coordX, coordY });
   }
