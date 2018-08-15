@@ -46,7 +46,7 @@ class Roulette extends Component {
   }
 
   render() {
-    const { options, radius, distance, customStyle, rouletteRotate, background, marker,centerImage, markerWidth,markerTop,centerWidth,centerTop,markerStyle } = this.props;
+    const { options, radius, distance, customStyle, rouletteRotate, background, marker,centerImage, markerWidth,markerTop,centerWidth,centerTop,markerStyle, centerStyle } = this.props;
 
     const interpolatedRotateAnimation = this.state._animatedValue.interpolate({
       inputRange: [0, options.length],
@@ -84,7 +84,7 @@ class Roulette extends Component {
         <Image source={marker} resizeMode="contain" style={[styles.marker,{zIndex:9999,top: markerTop, width:markerWidth, left: (radius/2) -(markerWidth/2)}, markerStyle ]}/>
         
         {centerImage &&
-          <Image source={centerImage} resizeMode="contain" style={[styles.marker,{zIndex:9999,top: centerTop, width:centerWidth, left: (radius/2) -(centerWidth/2) } ]}/>
+          <Image source={centerImage} resizeMode="contain" style={[styles.marker,{zIndex:9999,top: centerTop, width:centerWidth, left: (radius/2) -(centerWidth/2) },centerStyle ]}/>
         }
       </View>
     );
