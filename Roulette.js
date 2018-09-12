@@ -46,7 +46,7 @@ class Roulette extends Component {
   }
 
   render() {
-    const { options, radius, distance, customStyle, rouletteRotate, background, marker,centerImage, markerWidth,markerTop,centerWidth,centerTop,markerStyle, centerStyle } = this.props;
+    const { options, radius, distance, customStyle, rouletteRotate, background, marker,centerImage, markerWidth,markerTop,centerWidth,centerTop,markerStyle, centerStyle, rotateEachElement } = this.props;
 
     const interpolatedRotateAnimation = this.state._animatedValue.interpolate({
       inputRange: [0, options.length],
@@ -75,7 +75,7 @@ class Roulette extends Component {
                 radius={radius}
                 step={this.step}
                 distance={distance}
-                rouletteRotate={rouletteRotate}
+                rouletteRotate={ rotateEachElement(index) }
               />
           )}
           </ImageBackground>
@@ -99,6 +99,7 @@ Roulette.propTypes = {
   enableUserRotate: PropTypes.bool,
   onRotate: PropTypes.func,
   onRotateChange: PropTypes.func,  
+  rotateEachElement: PropTypes.func,
   customStyle: PropTypes.any,
   background: PropTypes.any,
   turns: PropTypes.number,
@@ -113,6 +114,7 @@ Roulette.defaultProps = {
   enableUserRotate: false,
   background: null,
   turns: 4,
+  rotateEachElement: (index) => 0,
   onRotate: () => {},
   onRotateChange: () => {},
   duration: 3500,

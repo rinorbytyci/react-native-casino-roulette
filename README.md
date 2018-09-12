@@ -23,6 +23,7 @@ markerWidth = {require('./marker.png')} // Set marker width
 markerTop: 0, // Marker top position
 onRotate = () => {} // Return active option after rotation
 onRotateChange = () => {} // Return rotate change status
+rotateEachElement = () => 0 // Return rotate angle for each element
 options= {[1,2,3]} // Set array of options
 customStyle // Roulette styles
 centerImage: null, // Center image (This image will not spin)
