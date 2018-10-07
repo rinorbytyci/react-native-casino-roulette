@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Animated, PanResponder, Easing, ImageBackground, Image } from 'react-native';
 import RouletteItem from './RouletteItem'
 import styles from './styles';
+import Spinner from '../../native-base-theme/components/Spinner';
 
 class Roulette extends Component {
 
@@ -10,11 +11,12 @@ class Roulette extends Component {
     super(props);
     this.state = {
       _animatedValue: new Animated.Value(0),
-      activeItem: 0
+      activeItem: 0,
+      direction:"clockwise"
     };
 
     this.step = props.step || (2 * Math.PI) / props.options.length;
-
+    
     this.panResponder = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true,
       onMoveShouldSetPanResponderCapture: () => true,
@@ -45,12 +47,38 @@ class Roulette extends Component {
     });
   }
 
+  spin(direction){
+    if(direction == "counterClockwise"){
+      this.setState({direction:"counterClockwise"})
+    }
+    const { enableUserRotate, onRotate, onRotateChange, duration, easing } = this.props;
+    const { options, turns } = this.props;
+    const { activeItem } = this.state;
+    let random = Math.floor(Math.random() * options.length) 
+    + (options.length*turns);                    
+    const nextItem = random;
+
+    this.state._animatedValue.setValue(activeItem);
+    let animation = Animated.timing(this.state._animatedValue, { toValue: nextItem, easing, duration })          
+    onRotateChange("start");
+    animation.start(()=>{
+      onRotateChange("stop");
+    });
+    
+    let newActiveItem = nextItem > options.length ? (nextItem % options.length)  : nextItem;
+    if(newActiveItem == 0){
+      newActiveItem = options.length
+    }
+    this.setState({ activeItem: newActiveItem }, () => onRotate(options[options.length - newActiveItem]));
+  }
+
+
   render() {
     const { options, radius, distance, customStyle, rouletteRotate, background, marker,centerImage, markerWidth,markerTop,centerWidth,centerTop,markerStyle, centerStyle, rotateEachElement } = this.props;
 
     const interpolatedRotateAnimation = this.state._animatedValue.interpolate({
       inputRange: [0, options.length],
-      outputRange: [`${rouletteRotate}deg`, `${360 + rouletteRotate}deg`]
+      outputRange: [`${rouletteRotate}deg`, `${this.state.direction == "counterClockwise" ? '-' : "" }${360 + rouletteRotate}deg`]
     });
 
     const displayOptions = options && options.length > 0 && options[0] && React.isValidElement(options[0]);

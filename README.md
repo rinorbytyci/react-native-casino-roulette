@@ -1,5 +1,10 @@
 # react-native-casino-roulette
 
+### Whats new in this fork?
+
+Added `spin(direction)` function
+direction parameter can be set to `counterClockwise` for counter clockwise spin or be set to anything else for clockwise
+
 ![](https://cdn.rawgit.com/DKbyo/react-native-roulette-casino-demo/711e0cc2/demo.gif)
 
 ### Installation
