@@ -51,6 +51,7 @@ class Roulette extends Component {
     if(direction == "counterClockwise"){
       this.setState({direction:"counterClockwise"})
     }
+    
     const { enableUserRotate, onRotate, onRotateChange, duration, easing } = this.props;
     const { options, turns } = this.props;
     const { activeItem } = this.state;
@@ -69,7 +70,12 @@ class Roulette extends Component {
     if(newActiveItem == 0){
       newActiveItem = options.length
     }
-    this.setState({ activeItem: newActiveItem }, () => onRotate(options[options.length - newActiveItem]));
+    if(direction == "counterClockwise"){
+      this.setState({ activeItem: newActiveItem }, () => onRotate(options[newActiveItem - (options.length - newActiveItem) < 0 ? newActiveItem - (options.length - newActiveItem) + options.length : newActiveItem - (options.length - newActiveItem)]));
+    }else{
+      this.setState({ activeItem: newActiveItem }, () => onRotate(options[options.length - newActiveItem]));
+    }
+    
   }
 
 
