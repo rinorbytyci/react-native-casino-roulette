@@ -71,7 +71,16 @@ class Roulette extends Component {
       newActiveItem = options.length
     }
     if(direction == "counterClockwise"){
-      this.setState({ activeItem: newActiveItem }, () => onRotate(options[newActiveItem - (options.length - newActiveItem) < 0 ? newActiveItem - (options.length - newActiveItem) + options.length : newActiveItem - (options.length - newActiveItem)]));
+      this.setState({ activeItem: newActiveItem }, () => onRotate(options[options.length - newActiveItem]));
+
+      var newItemmm = newActiveItem - (options.length - newActiveItem)
+      if (newItemmm < 0){
+        newItemmm = newItemmm + options.length
+      }
+      if(newItemmm == options.length){
+        newItemmm -= options.length
+      }
+      this.setState({ activeItem: newActiveItem }, () => onRotate(options[newItemmm]));
     }else{
       this.setState({ activeItem: newActiveItem }, () => onRotate(options[options.length - newActiveItem]));
     }
