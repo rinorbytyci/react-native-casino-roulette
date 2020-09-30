@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Animated, PanResponder, Easing, ImageBackground, Image } from 'react-native';
 import RouletteItem from './RouletteItem'
 import styles from './styles';
-import Spinner from '../../native-base-theme/components/Spinner';
+import Spinner from '../../packages/components/src/native-base-theme/components/Spinner';
 
 class Roulette extends Component {
 
